@@ -5,7 +5,11 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -39,15 +43,39 @@ public class MainActivity extends AppCompatActivity {
 //                userDao.insert(user);
 //                Log.i(TAG,"User Added");
 
-                List<User> all = userDao.getAll();
+//                List<User> all = userDao.getAll();
+//
+//                all.forEach(u->{
+//                    Log.i(TAG,u.toString());
+//                });
 
-                all.forEach(u->{
-                    Log.i(TAG,u.toString());
-                });
+                //This will crash THreads intercepting (UI AND WORKING THREADS)
+                User user = userDao.getById(0);
+//
+//                TextView view = findViewById(R.id.text);
+//                view.setText(user.getFirstName());
+
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        TextView view = findViewById(R.id.text);
+//                        view.setText(user.getFirstName());
+//                    }
+//                });
+
+
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        TextView view = findViewById(R.id.text);
+                        view.setText(user.getFirstName());
+                    }
+                }, 5000);
             }
+
         }).start();
 
-        Log.i(TAG,"New Tag");
+
 
 
     }
